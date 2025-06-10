@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abraham's Journey Map</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .map-container {
+            position: relative;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .map-svg {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            border-radius: 10px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .location {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .location:hover {
+            transform: scale(1.2);
+        }
+        
+        .location-dot {
+            fill: #e74c3c;
+            stroke: white;
+            stroke-width: 2;
+        }
+        
+        .location-label {
+            fill: white;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .kaaba-symbol {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .kaaba-symbol:hover {
+            transform: scale(1.2);
+        }
+        
+        .journey-path {
+            stroke: #f39c12;
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 8,4;
+            animation: dashMove 3s linear infinite;
+        }
+        
+        @keyframes dashMove {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -24; }
+        }
+        
+        .legend {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .legend h3 {
+            margin: 0 0 15px 0;
+            color: #2d3436;
+            font-size: 1.3em;
+        }
+        
+        .legend-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f1f2f6;
+            border-left: 4px solid #e74c3c;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .legend-item:hover {
+            background: #ddd;
+            transform: translateX(5px);
+        }
+        
+        .legend-item strong {
+            color: #2d3436;
+            font-size: 1.1em;
+        }
+        
+        .legend-item span {
+            color: #636e72;
+            font-style: italic;
+        }
+        
+        .modern-location {
+            color: #00b894;
+            font-weight: 600;
+        }
+        
+        .timeline {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 10px;
+        }
+        
+        .timeline h3 {
+            margin: 0 0 15px 0;
+            color: #2d3436;
+            text-align: center;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 8px;
+        }
+        
+        .timeline-number {
+            background: #6c5ce7;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Abraham's Journey</h1>
+            <p>Following the patriarch's path through the ancient Near East (c. 2166-1991 BCE)</p>
+        </div>
+        
+        <div class="map-container">
+            <svg class="map-svg" viewBox="0 0 800 400">
+                <!-- Background regions -->
+                <rect x="0" y="0" width="800" height="400" fill="url(#waterGradient)"/>
+                
+                <!-- Land masses -->
+                <path d="M50 100 Q200 80 350 90 L780 95 L780 380 Q400 370 50 380 Z" fill="#8fbc8f" opacity="0.3"/>
+                <path d="M600 50 Q700 60 780 55 L780 95 Q700 90 600 85 Z" fill="#deb887" opacity="0.4"/>
+                
+                <!-- Journey path -->
+                <path class="journey-path" d="M680 200 Q550 180 400 190 Q300 200 250 220 Q200 240 180 280"/>
+                
+                <!-- Location markers -->
+                <g class="location" onclick="showInfo('ur')">
+                    <circle class="location-dot" cx="680" cy="200" r="8"/>
+                    <text class="location-label" x="690" y="195">Ur</text>
+                </g>
+                
+                <g class="location" onclick="showInfo('haran')">
+                    <circle class="location-dot" cx="400" cy="190" r="8"/>
+                    <text class="location-label" x="410" y="185">Haran</text>
+                </g>
+                
+                <g class="location" onclick="showInfo('canaan')">
+                    <circle class="location-dot" cx="250" cy="220" r="8"/>
+                    <text class="location-label" x="260" y="215">Canaan</text>
+                </g>
+                
+                <g class="location" onclick="showInfo('egypt')">
+                    <circle class="location-dot" cx="180" cy="280" r="8"/>
+                    <text class="location-label" x="190" y="275">Egypt</text>
+                </g>
+                
+                <!-- Kaaba location -->
+                <g class="location" onclick="showInfo('mecca')">
+                    <rect class="kaaba-symbol" x="535" y="280" width="12" height="12" rx="2" fill="#2d3436" stroke="#ddd" stroke-width="2"/>
+                    <text class="location-label" x="555" y="288" style="fill: #2d3436; font-weight: bold;">Mecca (Kaaba)</text>
+                </g>
+                
+                <!-- Geographic labels -->
+                <text x="500" y="140" fill="white" font-size="16" font-weight="bold" opacity="0.7">MESOPOTAMIA</text>
+                <text x="120" y="250" fill="white" font-size="16" font-weight="bold" opacity="0.7">EGYPT</text>
+                <text x="300" y="300" fill="white" font-size="16" font-weight="bold" opacity="0.7">CANAAN</text>
+                <text x="480" y="320" fill="white" font-size="16" font-weight="bold" opacity="0.7">ARABIA</text>
+                
+                <!-- Water bodies -->
+                <text x="50" y="50" fill="white" font-size="14" opacity="0.6">Mediterranean Sea</text>
+                <text x="550" y="320" fill="white" font-size="14" opacity="0.6">Persian Gulf</text>
+                
+                <!-- Gradient definitions -->
+                <defs>
+                    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#74b9ff;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#0984e3;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        
+        <div class="legend">
+            <h3>Key Locations in Abraham's Life</h3>
+            
+            <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #0984e3;">
+                <strong>Dating Note:</strong> These dates follow traditional biblical chronology. Modern scholarship suggests Abraham may have lived during the Middle Bronze Age (c. 2100-1550 BCE), with some placing him closer to 2000-1800 BCE based on archaeological evidence.
+            </div>
+            
+            <div class="legend-item">
+                <strong>Ur of the Chaldeans</strong> - <span class="modern-location">Southern Iraq</span><br>
+                <span>Abraham's birthplace in ancient Mesopotamia (c. 2166 BCE)</span>
+            </div>
+            
+            <div class="legend-item">
+                <strong>Haran</strong> - <span class="modern-location">Southeastern Turkey</span><br>
+                <span>Where Abraham's family settled and where he received God's call (departed c. 2091 BCE)</span>
+            </div>
+            
+            <div class="legend-item">
+                <strong>Canaan</strong> - <span class="modern-location">Palestine/Israel</span><br>
+                <span>The Promised Land, including Hebron, Bethel, and Beersheba (c. 2091-1991 BCE)</span>
+            </div>
+            
+            <div class="legend-item">
+                <strong>Egypt</strong> - <span class="modern-location">Egypt</span><br>
+                <span>Temporary refuge during famine in Canaan (c. 2080s BCE)</span>
+            </div>
+            
+            <div class="legend-item" style="border-left-color: #2d3436;">
+                <strong>Mecca (Kaaba)</strong> - <span class="modern-location">Saudi Arabia</span><br>
+                <span>Islamic tradition: Abraham and Ishmael built the Kaaba here (c. 2070s BCE)</span>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            <h3>Abraham's Journey Timeline (Most Accepted Dates)</h3>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">1</div>
+                <div>
+                    <strong>Born in Ur (c. 2166 BCE)</strong> - Ancient Sumerian city in Mesopotamia<br>
+                    <span style="font-size: 0.9em; color: #636e72;">Traditional biblical chronology places his birth around this time</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">2</div>
+                <div>
+                    <strong>Moved to Haran (c. 2091 BCE)</strong> - Family migration to northern Mesopotamia<br>
+                    <span style="font-size: 0.9em; color: #636e72;">Age 75 when called to leave for Canaan (Genesis 12:4)</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">3</div>
+                <div>
+                    <strong>Called to Canaan (c. 2091 BCE)</strong> - Divine command to leave Haran for the Promised Land<br>
+                    <span style="font-size: 0.9em; color: #636e72;">Beginning of the covenant promises</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">4</div>
+                <div>
+                    <strong>Sojourn in Egypt (c. 2080s BCE)</strong> - Temporary stay during famine<br>
+                    <span style="font-size: 0.9em; color: #636e72;">Brief period shortly after arriving in Canaan</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">5</div>
+                <div>
+                    <strong>Isaac Born (c. 2066 BCE)</strong> - Son of promise born when Abraham was 100<br>
+                    <span style="font-size: 0.9em; color: #636e72;">Fulfillment of covenant promise (Genesis 21:5)</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">6</div>
+                <div>
+                    <strong>Built the Kaaba (c. 2070s BCE)</strong> - Islamic tradition: With Ishmael in Mecca<br>
+                    <span style="font-size: 0.9em; color: #636e72;">Quran 2:127 - "And [mention] when Abraham was raising the foundations of the House"</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">7</div>
+                <div>
+                    <strong>Death in Canaan (c. 1991 BCE)</strong> - Died at age 175, buried in Cave of Machpelah<br>
+                    <span style="font-size: 0.9em; color: #636e72;">Traditional chronology based on Genesis 25:7</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showInfo(location) {
+            const info = {
+                ur: "Ur of the Chaldeans was Abraham's birthplace, a major Sumerian city in ancient Mesopotamia (modern-day Iraq).",
+                haran: "Haran was the city in northern Mesopotamia where Abraham's family settled and where he received God's call to go to Canaan.",
+                canaan: "Canaan, the Promised Land, where Abraham spent most of his later life. Key sites include Hebron, Bethel, and Beersheba.",
+                egypt: "Egypt, where Abraham temporarily went during a famine in Canaan, as recorded in Genesis.",
+                mecca: "Mecca, home of the Kaaba. Islamic tradition holds that Abraham (Ibrahim) and Ishmael (Ismail) built or rebuilt the Kaaba as the first house of worship dedicated to Allah. Referenced in Quran 2:127."
+            };
+            
+            alert(info[location]);
+        }
+    </script>
+</body>
+</html>
